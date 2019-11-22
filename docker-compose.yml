@@ -1,0 +1,37 @@
+version: '3'
+services:
+  testunited-webui:
+#    network_mode: host
+    image: testunited/testunited-webui:latest
+    ports:
+      - 9011:80
+    environment:
+      - server.port=80
+    depends_on:
+      - testunited-core
+
+  testunited-core:
+#    network_mode: host
+    image: testunited/testunited-core
+    ports:
+      - 9001:80
+    environment:
+      - server.port=80
+      - spring.jpa.hibernate.ddl-auto=${spring_jpa_hibernate_ddl_auto}
+      - spring.datasource.url=${spring_datasource_url}
+      - spring.datasource.username=${spring_datasource_username}
+      - spring.datasource.password=${spring_datasource_password}
+      - LOGBACK_LOG_LEVEL=INFO
+    depends_on:
+      - testunited-mysql
+  
+  testunited-mysql:
+#    network_mode: host
+    image: mysql:5.6
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ${PWD}/testunited-mysql/src/main/mysql/init:/docker-entrypoint-initdb.d
+      - ${PWD}/testunited-mysql/data:/var/lib/mysql
