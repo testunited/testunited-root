@@ -1,18 +1,18 @@
 version: '3'
 services:
-  testunited-webui:
+  testunited-web-ui:
 #    network_mode: host
-    image: testunited/testunited-webui:latest
+    image: testunited/testunited-web-ui:latest
     ports:
       - 9011:80
     environment:
       - server.port=80
     depends_on:
-      - testunited-core
+      - testunited-web-api
 
-  testunited-core:
+  testunited-web-api:
 #    network_mode: host
-    image: testunited/testunited-core
+    image: testunited/testunited-web-api:latest
     ports:
       - 9001:80
     environment:

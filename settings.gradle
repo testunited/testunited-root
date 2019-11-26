@@ -1,5 +1,5 @@
 rootProject.name = 'testunited'
 include 'testunited-api'
-include 'testunited-core'
+include 'testunited-web-api'
 include 'testunited-launcher'
-include 'testunited-web-ui'
+// include 'testunited-web-ui'
