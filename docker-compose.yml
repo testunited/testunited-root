@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   testunited-web-ui:
 #    network_mode: host
@@ -9,7 +9,14 @@ services:
       - server.port=80
     depends_on:
       - testunited-web-api
-
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 25M
+        reservations:
+          cpus: '0.25'
+          memory: 20M
   testunited-web-api:
 #    network_mode: host
     image: testunited/testunited-web-api:latest
@@ -24,14 +31,21 @@ services:
       - LOGBACK_LOG_LEVEL=INFO
     depends_on:
       - testunited-mysql
-  
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 250M
+        reservations:
+          cpus: '0.25'
+          memory: 200M
   testunited-mysql:
 #    network_mode: host
-    image: mysql:5.6
+    image: mysql:8
     ports:
       - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
-      - ${PWD}/testunited-mysql/src/main/mysql/init:/docker-entrypoint-initdb.d
-      - ${PWD}/testunited-mysql/data:/var/lib/mysql
+      - ${PWD}/../testunited-mysql/src/main/mysql/init:/docker-entrypoint-initdb.d
+      - ${PWD}/../testunited-mysql/data:/var/lib/mysql
